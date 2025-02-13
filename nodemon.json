@@ -1,0 +1,3 @@
+{
+  "exec": "npx tsc --build && node dist/server.js"
+}
