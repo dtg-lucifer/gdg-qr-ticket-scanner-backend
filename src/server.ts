@@ -9,12 +9,21 @@ const app = express();
 
 app.use(express.json());
 app.use(
+  // cors({
+  //   credentials: true,
+  //   origin: [
+  //     "http://localhost:5173",
+  //     "https://gdg-qr-ticket-scanner.vercel.app",
+  //   ],
+  // })
   cors({
-    credentials: true,
     origin: [
       "http://localhost:5173",
       "https://gdg-qr-ticket-scanner.vercel.app",
     ],
+    methods: ["GET", "POST", "OPTIONS"], // Allow necessary methods
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
   })
 );
 
@@ -33,14 +42,14 @@ app.post("/api/scan", async (req: Request, res: Response) => {
     scannedTicket = new CulturalTicket({
       name,
       email,
-      contact: contact.toString(),
+      contact,
       participation,
     });
   } else {
     scannedTicket = new AudienceTicket({
       name,
       email,
-      contact: contact.toString(),
+      contact,
     });
   }
 

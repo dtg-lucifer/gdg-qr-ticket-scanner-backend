@@ -10,12 +10,22 @@ const db_1 = require("./db");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use((0, cors_1.default)({
-    credentials: true,
+app.use(
+// cors({
+//   credentials: true,
+//   origin: [
+//     "http://localhost:5173",
+//     "https://gdg-qr-ticket-scanner.vercel.app",
+//   ],
+// })
+(0, cors_1.default)({
     origin: [
         "http://localhost:5173",
         "https://gdg-qr-ticket-scanner.vercel.app",
     ],
+    methods: ["GET", "POST", "OPTIONS"], // Allow necessary methods
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
 }));
 app.post("/api/scan", async (req, res) => {
     const { name, email, contact, participation } = req.body;
@@ -30,7 +40,7 @@ app.post("/api/scan", async (req, res) => {
         scannedTicket = new db_1.CulturalTicket({
             name,
             email,
-            contact: contact.toString(),
+            contact,
             participation,
         });
     }
@@ -38,7 +48,7 @@ app.post("/api/scan", async (req, res) => {
         scannedTicket = new db_1.AudienceTicket({
             name,
             email,
-            contact: contact.toString(),
+            contact,
         });
     }
     await scannedTicket.save();
