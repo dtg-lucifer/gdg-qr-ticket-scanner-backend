@@ -17,10 +17,7 @@ app.use(
   //   ],
   // })
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://gdg-qr-ticket-scanner.vercel.app",
-    ],
+    origin: ["localhost:5173", "gdg-qr-ticket-scanner.vercel.app"],
     methods: ["GET", "POST", "OPTIONS"], // Allow necessary methods
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
