@@ -3,14 +3,30 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const TicketSchema = new Schema({
+const CulturalTicketSchema = new Schema({
   name: String,
-  studentId: String,
   email: String,
-  ticketType: String,
+  contact: String,
+  participation: String,
 });
 
-const TicketModel = model("Ticket", TicketSchema, "GENERAL_TICKETS");
+const AudienceTicketSchema = new Schema({
+  name: String,
+  email: String,
+  contact: String,
+});
+
+const CulturalTicket = model(
+  "CulturalTicket",
+  CulturalTicketSchema,
+  "CULTURAL_TICKETS"
+);
+
+const AudienceTicket = model(
+  "AudienceTicket",
+  AudienceTicketSchema,
+  "AUDIENCE_TICKETS"
+);
 
 const MONGO_URI = process.env.MONGO_URI;
 const connectDb = async () => {
@@ -25,4 +41,4 @@ const connectDb = async () => {
   }
 };
 
-export { connectDb, TicketModel };
+export { connectDb, CulturalTicket, AudienceTicket };

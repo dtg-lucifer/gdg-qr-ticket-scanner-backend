@@ -36,18 +36,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TicketModel = exports.connectDb = void 0;
+exports.AudienceTicket = exports.CulturalTicket = exports.connectDb = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const TicketSchema = new mongoose_1.Schema({
+const CulturalTicketSchema = new mongoose_1.Schema({
     name: String,
-    studentId: String,
     email: String,
-    ticketType: String,
+    contact: String,
+    participation: String,
 });
-const TicketModel = (0, mongoose_1.model)("Ticket", TicketSchema, "GENERAL_TICKETS");
-exports.TicketModel = TicketModel;
+const AudienceTicketSchema = new mongoose_1.Schema({
+    name: String,
+    email: String,
+    contact: String,
+});
+const CulturalTicket = (0, mongoose_1.model)("CulturalTicket", CulturalTicketSchema, "CULTURAL_TICKETS");
+exports.CulturalTicket = CulturalTicket;
+const AudienceTicket = (0, mongoose_1.model)("AudienceTicket", AudienceTicketSchema, "AUDIENCE_TICKETS");
+exports.AudienceTicket = AudienceTicket;
 const MONGO_URI = process.env.MONGO_URI;
 const connectDb = async () => {
     try {

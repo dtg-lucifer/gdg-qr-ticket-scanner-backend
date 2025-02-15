@@ -18,19 +18,29 @@ app.use((0, cors_1.default)({
     ],
 }));
 app.post("/api/scan", async (req, res) => {
-    const { name, studentId, email, ticketType } = req.body;
-    if (!name || !studentId || !email || !ticketType) {
+    const { name, email, contact, participation } = req.body;
+    if (!name || !email) {
         res.status(400).json({
             error: "Some fields are missing",
         });
         return;
     }
-    const scannedTicket = new db_1.TicketModel({
-        name,
-        studentId,
-        email,
-        ticketType,
-    });
+    let scannedTicket;
+    if (participation) {
+        scannedTicket = new db_1.CulturalTicket({
+            name,
+            email,
+            contact: contact.toString(),
+            participation,
+        });
+    }
+    else {
+        scannedTicket = new db_1.AudienceTicket({
+            name,
+            email,
+            contact: contact.toString(),
+        });
+    }
     await scannedTicket.save();
     res.status(200).json({
         message: "Ticket scanned successfully",
@@ -44,4 +54,4 @@ app.get("/health", (req, res) => {
     return;
 });
 (0, db_1.connectDb)();
-app.listen(8080, () => console.log("Server is listening on port 8080"));
+app.listen(8080, () => console.log("[Server] - Server is listening on port 8080"));

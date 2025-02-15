@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { connectDb, TicketModel } from "./db";
+import { connectDb, CulturalTicket, AudienceTicket } from "./db";
 
 dotenv.config();
 
@@ -19,20 +19,30 @@ app.use(
 );
 
 app.post("/api/scan", async (req: Request, res: Response) => {
-  const { name, studentId, email, ticketType } = req.body;
-  if (!name || !studentId || !email || !ticketType) {
+  const { name, email, contact, participation } = req.body;
+  if (!name || !email) {
     res.status(400).json({
       error: "Some fields are missing",
     });
     return;
   }
 
-  const scannedTicket = new TicketModel({
-    name,
-    studentId,
-    email,
-    ticketType,
-  });
+  let scannedTicket;
+
+  if (participation) {
+    scannedTicket = new CulturalTicket({
+      name,
+      email,
+      contact: contact.toString(),
+      participation,
+    });
+  } else {
+    scannedTicket = new AudienceTicket({
+      name,
+      email,
+      contact: contact.toString(),
+    });
+  }
 
   await scannedTicket.save();
 
@@ -52,4 +62,6 @@ app.get("/health", (req: Request, res: Response) => {
 
 connectDb();
 
-app.listen(8080, () => console.log("Server is listening on port 8080"));
+app.listen(8080, () =>
+  console.log("[Server] - Server is listening on port 8080")
+);
